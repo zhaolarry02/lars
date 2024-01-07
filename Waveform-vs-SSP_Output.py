@@ -1,4 +1,5 @@
 # Compares the pedestal subtracted integral calculated from waveform values to the SiPM Signal Processor (SSP)'s processed 'IntegratedSum' (Integral bound begins M2 values before trigger, length of I1)
+# Code for confirmation of SSP accuracy in calculations of Waveform Integral, Mean, and Pedestal.
 
 import numpy as np
 import pandas as pd
