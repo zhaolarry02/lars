@@ -1,9 +1,11 @@
+# Plot SiPM Trigger Rate versus vertical distance from Liquid Argon surface to SiPM
+
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.optimize
 import os
 import re
-from Analysis import Analysis # Use functions defined in 'Analysis' python script written by Dr. Mu Wei, Dr. Mu Wei, and Larry Zhao
+from Analysis import Analysis # Use functions defined in 'Analysis' python script written by Dr. Mu Wei, Dr. Alex Himmel, and Larry Zhao
 
 def exp(x, m, a, b): # exponential function for curve fit
     return (a * np.exp(np.array([-i for i in x]) * m) + b)
