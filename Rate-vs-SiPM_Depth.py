@@ -73,7 +73,7 @@ def function(dirs):
     plt.xlabel('SiPM Height (cm)')
     plt.ylabel('128 nm Trigger Rate')
     plt.ylim(0, 25)
-        # plt.savefig("C:\\Users\\lzvio\\RatevsChannelperDepth\\"+str(depth[d])+"in. Signal vs SiPM Depth.png")
+        # plt.savefig("<save directory>"+str(depth[d])+"in. Signal vs SiPM Depth.png")
     # plt.legend()
     plt.show()
         
@@ -84,4 +84,4 @@ def function(dirs):
     # plt.title('128 nm, Ch 2/Ch 1 Rate vs Depth')
     # plt.show()
 
-function(["C:\\Users\\lzvio\\20231110\\", "C:\\Users\\lzvio\\20231107\\", "C:\\Users\\lzvio\\20231108\\", "C:\\Users\\lzvio\\20231109\\", "C:\\Users\\lzvio\\20231111\\"])
+function([<list of data file directories>])
