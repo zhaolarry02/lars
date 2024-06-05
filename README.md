@@ -13,7 +13,7 @@ Operate experiment components, including:
 
 
 Data Analysis:
-Suite of analyses for diagnosis of experiment equipment, input of setting performance, and more. Plot histograms, scatter plots, curve fit parameters, etc. to measure the Rayleigh scattering length.
+Suite of analyses for diagnosis of experiment equipment (e.g. data acquisition hardware), input of setting performance (e.g. SiPM bias voltage, trigger parameters), and more. Plot histograms, scatter plots, curve fit parameters, etc. to measure the Rayleigh scattering length.
 
 
 Other Python scripts compiled on local machines to be edited for clarity before upload to this repository.
