@@ -11,20 +11,20 @@ def exp(x, m, a, b): # exponential function for curve fit
     return (a * np.exp(np.array([-i for i in x]) * m) + b)
 
 def function(dirs):
-    depth = [60, 55, 50, 45, 40, 35, 30, 26, 25, 21, 17, 14, 12] # in inches
-    depthcm = [128.0970994, 114.9495949, 102.4368448, 89.3539062, 76.68776733, 64.50960174, 51.8504376, 42.32291091, 39.6549546, 27.42838632, 17.6438245, 9.824104101, 4.674364388] # in centimeters
+    depth = [list of liquid argon depth meter readings] # in inches
+    depthcm = [list of liquid argon depth meter readings] # in centimeters
     channelID = [1, 2, 4, 5]
-    wavelength = [124, 125, 126, 127, 128, 129, 130, 131, 132, 142, 152, 173, 174, 175, 176, 177, 178, 179, 180] # in nanometers
-    wv = 128
+    # wavelength = [124, 125, 126, 127, 128, 129, 130, 131, 132, 142, 152, 173, 174, 175, 176, 177, 178, 179, 180] # wavelength in nanometers
+    wv = 128 # Argon scintillation peak wavelength in nanometers
     ana = Analysis(1280)
     
     mainlist = []
     for dir in dirs:
         for filename in os.listdir(dir):        
             t = re.split("_", filename) # Split file title
-            time = (int(t[3][0:2]))*3600 + int(t[3][3:5])*60 + int(t[3][6:8]) # Time in seconds since midnight
+            time = (int(t[3][0:2]))*3600 + int(t[3][3:5])*60 + int(t[3][6:8]) # Calculate time in seconds since time 00:00:00 of data collection date
             df = ana.import_file(dir+filename, [])
-            trigrate = ana.trig_rate(df, channelID) # Calculate Trigger Rate (Hz) using 'Analysis' script trigger rate function
+            trigrate = ana.trig_rate(df, channelID) # Calculate Trigger Rate in Hertz via 'Analysis' script trigger rate function
             mainlist.append([time, t[0][:2], t[1][:3], trigrate[0], trigrate[1], trigrate[2], trigrate[3]]) # sublist contains time (s), depth (in), wavelength (nm), trigger rates (Hz) for Channel 1, 2, 4, 5
         
     closed = [mainlist[i] for i in range(len(mainlist)) if mainlist[i][2] == 'clo'] # Shutter closed data (background signals only)
@@ -45,10 +45,9 @@ def function(dirs):
 
     opened = [mainlist[i] for i in range(len(mainlist)) if mainlist[i][2] == str(wv)]
 
-    sipmz = [25.75968709, 46.25968709, 65.25968709, 143.5596871] # SiPM Depth
-    ratios = []
-    colors = ['r', 'b', 'g', 'c', 'm', 'y', 'k', 'w', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive']
+    sipmz = [25.75968709, 46.25968709, 65.25968709, 143.5596871] # SiPM Depth in centimeters
     color = ['c', 'r', 'b', 'g']
+    # colors = ['r', 'b', 'g', 'c', 'm', 'y', 'k', 'w', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive']
 
     for d in range(len(depth)):
         signal1 = [] # Ch 1
@@ -69,17 +68,19 @@ def function(dirs):
         plt.scatter(sipmz2, wvlsignal, c=color) # , label=str(depth[d])
         # plt.title(str(depthcm[d])+" LAr Depth (cm)")
         # plt.ylim(ymin=0)
+
     plt.title('Signal Rate vs SiPM Depth')
     plt.xlabel('SiPM Height (cm)')
     plt.ylabel('128 nm Trigger Rate')
     plt.ylim(0, 25)
-        # plt.savefig("<save directory>"+str(depth[d])+"in. Signal vs SiPM Depth.png")
+    plt.grid()
     # plt.legend()
     plt.show()
-        
+    # plt.savefig("<save directory>"+str(depth[d])+"in. Signal vs SiPM Depth.png")
+
     # # Plot Ch 2 / Ch 1 rate
-    # ratio = np.mean(signal2) / np.mean(signal1)
-    # ratios.append(ratio)
+    # ratios = []
+    # ratios.append(np.mean(signal2) / np.mean(signal1))
     # plt.scatter(depthcm, ratios)
     # plt.title('128 nm, Ch 2/Ch 1 Rate vs Depth')
     # plt.show()
