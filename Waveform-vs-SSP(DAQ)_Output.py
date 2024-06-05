@@ -20,10 +20,10 @@ waveform = [dfw[0].iloc[i+24:i+2024] for i in range(0,len(dfw),2024)] # Waveform
 num = df[df['ChannelID']==1]['ChannelID'].count()
 
 # Initial SSP Input Settings. See SSP Manual (https://indico.fnal.gov/event/12392/contributions/13933/attachments/9262/11900/docdb-1571.pdf) for more details.
-I1 = 1000 # Length of 'IntegratedSum' bounds
-I2 = 200
-M1 = 40
-M2 = 20 # Length of position of 'IntegratedSum' initial bound preceding the trigger
+I1 = 1000 # 'IntegratedSum' window
+I2 = 200  # Baseline ('Prerise') window
+M1 = 40   # 'PeakSum' sampling separation window
+M2 = 20   # 'IntegratedSum' window portion to from initial bound to trigger point
 
 pretrig = 400 # Number of saved values preceding the trigger
 length = 2000 # Number of waveform values
@@ -46,33 +46,41 @@ for i in range(num):
     peakdiff = peak_sum / df['PeakSum'][i]
     peak_diff.append(peakdiff)
 
-pedestal_diff = []
+pedestal_diff = [] # Prerise versus waveform baseline calculation
 for i in range(num):
-    pedestal_diff.append((np.mean(waveform[i][:pretrig-M2])) / (df['Prerise'][i]/I2))
-        # pedestal_diff.append((df['Baseline'][i]/4) / (df['Prerise'][i]/I2))
+    pedestal_diff.append((np.sum(waveform[i][pretrig-M2-I2:pretrig-M2])) / (df['Prerise'][i]))
+    # pedestal_diff.append((df['Baseline'][i]/4) / (df['Prerise'][i]/I2))
 
 pedestal_sub_diff = []
-int_sub_diff = []
 for i in range(num):
-    header1 = df['IntegratedSum'][i] - (df['Prerise'][i]/I2*I1)
-    header2 = df['IntegratedSum'][i] - (np.mean(waveform[i][:pretrig-M2])*I1)
-    pedestal_sub_diff.append((header2) / (header1))
+    header1 = np.sum(waveform[i][pretrig-M2:pretrig-M2+I1]) - (np.sum(waveform[i][pretrig-M2-I2:pretrig-M2])*(I1/I2))
+    header2 = df['IntegratedSum'][i] - (df['Prerise'][i]*(I1/I2))
+    # header3 = np.sum(waveform[i][pretrig-M2:pretrig-M2+I1]) -  (df['Prerise'][i]*(I1/I2))
+    # header4 = df['IntegratedSum'][i] - (np.sum(waveform[i][pretrig-M2-I2:pretrig-M2])*(I1/I2))
 
-    sspintprerise = (df['IntegratedSum'][i] - (df['Prerise'][i]/I2*I1))
-    sspintbaseline = (df['IntegratedSum'][i] - df['Baseline'][i]/4*I1)
-    intsubdiff = sspintprerise / header2
-    int_sub_diff.append(intsubdiff)
+    header5 = df['PeakSum'][i] - (np.sum(waveform[i][pretrig-M2-I2:pretrig-M2])*(M1/I2))
+    header6 = df['PeakSum'][i] - (df['Prerise'][i]*(M1/I2))
+    # sspintbaseline = (df['IntegratedSum'][i] - df['Baseline'][i]/4*I1)
+
+    pedestal_sub_diff.append((header1) / (header2))
+
+waveform_pedestals = []
+for i in range(num):
+    waveform_pedestals.append(np.sum(waveform[i][pretrig-M2-I2:pretrig-M2]))
+# print(np.mean(df['IntegratedSum'])-np.mean(waveform_pedestals)*(I1/I2))
+# print(np.mean(df['IntegratedSum'])-np.mean(df['Prerise']*(I1/I2)))
+
 
 plt.figure()
-plt.title('I1=1000, I2=200, M1=40, M2=20')
-plt.hist(pedestal_sub_diff, bins=np.linspace(0, 10, 50), alpha=0.5)
+plt.hist(pedestal_diff, bins=np.linspace(-8, 4, 100), alpha=0.5)
 plt.show()
 
+
 # Plot SiPM Trigger Waveform Example
-x = range(2000)
-y = waveform[600]
-plt.plot(x, y)
-plt.title('SiPM Trigger Waveform')
-plt.xlabel('Time Ticks (6.667 ns)')
-plt.ylabel('ADC Counts')
-plt.show()
+# x = range(2000)
+# y = waveform[1]
+# plt.plot(x, y)
+# plt.title('SiPM Trigger Waveform')
+# plt.xlabel('Time Ticks (6.667 ns)')
+# plt.ylabel('ADC Counts')
+# plt.show()
