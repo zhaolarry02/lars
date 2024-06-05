@@ -69,7 +69,7 @@ def function(dirs):
         plt.scatter(sipmz2, wvlsignal, c=color) # , label=str(depth[d])
         # plt.title(str(depthcm[d])+" LAr Depth (cm)")
         # plt.ylim(ymin=0)
-    plt.title(Signal Rate vs SiPM Depth)
+    plt.title('Signal Rate vs SiPM Depth')
     plt.xlabel('SiPM Height (cm)')
     plt.ylabel('128 nm Trigger Rate')
     plt.ylim(0, 25)
