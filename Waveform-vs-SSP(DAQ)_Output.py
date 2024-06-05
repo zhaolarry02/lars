@@ -19,7 +19,7 @@ waveform = [dfw[0].iloc[i+24:i+2024] for i in range(0,len(dfw),2024)] # Waveform
 
 num = df[df['ChannelID']==1]['ChannelID'].count()
 
-# Initial SSP Input Settings
+# Initial SSP Input Settings. See SSP Manual (https://indico.fnal.gov/event/12392/contributions/13933/attachments/9262/11900/docdb-1571.pdf) for more details.
 I1 = 1000 # Length of 'IntegratedSum' bounds
 I2 = 200
 M1 = 40
