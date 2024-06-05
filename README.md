@@ -1,6 +1,7 @@
 Python programs for hardware operation and data analysis in a liquid argon Rayleigh scattering length measurement.
 
 Read updated Science Undergraduate Laboratory Internship (SULI) Research Project Report Paper here: https://www.overleaf.com/project/64d0e6a0daa22c1e7066b38d
+
 Or, read original version here: https://indico.fnal.gov/event/62277/
 
 
