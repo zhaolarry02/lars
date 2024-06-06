@@ -101,7 +101,6 @@ def ratevsLArdepthfit(dirs):
     for dir in dirs:
         for filename in os.listdir(dir):        
             t = re.split("_", filename) # Split file title
-
             time = (int(t[3][0:2]))*3600 + int(t[3][3:5])*60 + int(t[3][6:8]) # Calculate time in seconds since time 00:00:00 of data collection date
             df = ana.import_file(dir+filename, [])
             trigrate = ana.trig_rate(df, channelID) # Calculate Trigger Rate in Hertz via 'Analysis' script trigger rate function
