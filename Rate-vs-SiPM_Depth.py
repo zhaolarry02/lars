@@ -10,7 +10,7 @@ from Analysis import Analysis # Use functions defined in 'Analysis' python scrip
 def exp(x, m, a, b): # exponential function for curve fit
     return (a * np.exp(np.array([-i for i in x]) * m) + b)
 
-def function(path):
+def function(dirs):
     depth = [list of liquid argon depth meter readings] # in inches
     depthcm = [list of liquid argon depth meter readings] # in centimeters
     channelID = [1, 2, 4, 5]
@@ -19,7 +19,7 @@ def function(path):
     ana = Analysis(1280)
     
     mainlist = []
-    for dir in path:
+    for dir in dirs:
         for filename in os.listdir(dir):        
             t = re.split("_", filename) # Split file title
             time = (int(t[3][0:2]))*3600 + int(t[3][3:5])*60 + int(t[3][6:8]) # Calculate time in seconds since time 00:00:00 of data collection date
