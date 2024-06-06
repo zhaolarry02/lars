@@ -131,7 +131,7 @@ def ratevsLArdepthfit(dirs):
         plt.grid()
         plt.legend()
         plt.show()
-        # plt.savefig("C:\\Users\\lzvio\\Scattering Length Curve Fit Plot\\Length_Fit"+str(wv))
+        # plt.savefig("<save directory>"+"Length_Fit"+str(wv)+".png")
         # print(wvlsignal)
 
 
