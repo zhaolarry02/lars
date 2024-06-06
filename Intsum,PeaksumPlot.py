@@ -1,4 +1,4 @@
-# Plot Intsum, Peaksum Plots
+# Plot Intsum, Peaksum for single wavelength / for background
 
 import numpy as np
 import pandas as pd
