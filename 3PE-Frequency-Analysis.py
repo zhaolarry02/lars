@@ -102,8 +102,8 @@ def LArDepthFreqWVPlot(path, depth): # path is to 7.27 data directory, depth is 
             df = ana.import_file(path+filename, [])
             ana.new_timestamps(df)
                 
-            peaksum3pe = df.loc[(df['ChannelID'] == Ch)]
-            rate = len(peaksum3pe) / (np.max(df['timestamp_S']) - np.min(df['timestamp_S']))
+            num = len(df.loc[(df['ChannelID'] == Ch)])
+            rate = num / (np.max(df['timestamp_S']) - np.min(df['timestamp_S']))
             rate_list.append(rate)
 
     plt.title(depth+' Ch'+str(Ch)+' Frequency vs Wavelength Plot')
