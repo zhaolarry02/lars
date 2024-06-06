@@ -1,4 +1,4 @@
-# Plot SiPM Trigger Rate versus vertical distance from Liquid Argon surface to SiPM
+# Two functions produce: 1. plot of SiPM Trigger Rate versus vertical distance from Liquid Argon surface to SiPM, 2. plot SiPM Trigger Rate versus Liquid Argon Depth
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,9 +10,11 @@ from Analysis import Analysis # Use functions defined in 'Analysis' python scrip
 def exp(x, m, a, b): # exponential function for curve fit
     return (a * np.exp(np.array([-i for i in x]) * m) + b)
 
-def function(dirs):
-    depth = [list of liquid argon depth meter readings] # in inches
-    depthcm = [list of liquid argon depth meter readings] # in centimeters
+
+# Plot SiPM Trigger Rate versus vertical distance from Liquid Argon surface to SiPM
+def ratevsSiPMdepth(dirs):
+    depth = [60, 55, 50, 45, 40, 35, 30, 26, 25, 21, 17, 14, 12] # depth in inches
+    depthcm = [128.0970994, 114.9495949, 102.4368448, 89.3539062, 76.68776733, 64.50960174, 51.8504376, 42.32291091, 39.6549546, 27.42838632, 17.6438245, 9.824104101, 4.674364388] # depth in centimeters
     channelID = [1, 2, 4, 5]
     # wavelength = [124, 125, 126, 127, 128, 129, 130, 131, 132, 142, 152, 173, 174, 175, 176, 177, 178, 179, 180] # wavelength in nanometers
     wv = 128 # Argon scintillation peak wavelength in nanometers
@@ -85,4 +87,53 @@ def function(dirs):
     # plt.title('128 nm, Ch 2/Ch 1 Rate vs Depth')
     # plt.show()
 
-function([<list of data file directories>])
+
+# Plot SiPM Trigger Rate versus Liquid Argon Depth
+def ratevsLArdepthfit(dirs):
+    depth = [60, 55, 50, 45, 40, 35, 30, 26, 25, 21, 17, 14, 12] # depth in inches
+    depthcm = [128.0970994, 114.9495949, 102.4368448, 89.3539062, 76.68776733, 64.50960174, 51.8504376, 42.32291091, 39.6549546, 27.42838632, 17.6438245, 9.824104101, 4.674364388] # depth in centimeters
+    channelID = [1] # [1, 2, 4, 5]
+    wavelength = [128] # [124, 125, 126, 127, 128, 129, 130, 131, 132, 142, 152, 173, 174, 175, 176, 177, 178, 179, 180] # wavelength in nanometers
+    ana = Analysis(1280)
+
+    mainlist = []
+
+    for dir in dirs:
+        for filename in os.listdir(dir):        
+            t = re.split("_", filename) # Split file title
+
+            time = (int(t[3][0:2]))*3600 + int(t[3][3:5])*60 + int(t[3][6:8]) # Calculate time in seconds since time 00:00:00 of data collection date
+            df = ana.import_file(dir+filename, [])
+            trigrate = ana.trig_rate(df, channelID) # Calculate Trigger Rate in Hertz via 'Analysis' script trigger rate function
+            mainlist.append([time, t[0][:2], t[1][:3], trigrate[0]]) # sublist contains time (s), depth (in), wavelength (nm), trigger rate (Hz) for Channel 1
+        
+    closed = [mainlist[i] for i in range(len(mainlist)) if mainlist[i][2] == 'clo'] # Shutter closed data (background signals only)
+    bkgdlist = []
+    for d in depth:
+        bkgd = np.mean([closed[i][3] for i in range(len(closed)) if float(closed[i][1]) == d]) # background trigger rate at depth d
+        bkgdlist.append([d, bkgd])
+
+    for wv in wavelength:
+        opened = [mainlist[i] for i in range(len(mainlist)) if mainlist[i][2] == str(wv)]
+        wvlsignal = [] 
+        for d in range(len(depth)):
+            signal = np.mean([i[3] - bkgdlist[d][1] for i in opened if float(i[1]) == depth[d]])
+            wvlsignal.append(signal)
+        
+
+        plt.title(str(wv)+str(channelID))
+        plt.scatter(depthcm, wvlsignal)
+        par, cov = scipy.optimize.curve_fit(exp, depthcm[:8], wvlsignal[:8], p0=[1/125, 115, 25], maxfev=100000)
+        plt.plot(depthcm[:8], exp(depthcm[:8], *par), label='l = '+str(round(1/par[0], 2)))
+        plt.xlabel('LAr Depth (cm)')
+        plt.ylabel('Ch 1 Trigger Rate')
+        plt.ylim(ymin=0)
+        plt.grid()
+        plt.legend()
+        plt.show()
+        # plt.savefig("C:\\Users\\lzvio\\Scattering Length Curve Fit Plot\\Length_Fit"+str(wv))
+        # print(wvlsignal)
+
+
+ratevsSiPMdepth([<list of data file directories>])
+ratevsLArdepthfit([<list of data file directories>])
