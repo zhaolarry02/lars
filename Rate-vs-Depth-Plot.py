@@ -19,9 +19,9 @@ def ratevsSiPMdepth(dirs):
     # wavelength = [124, 125, 126, 127, 128, 129, 130, 131, 132, 142, 152, 173, 174, 175, 176, 177, 178, 179, 180] # wavelength in nanometers
     wv = 128 # Argon scintillation peak wavelength in nanometers
     ana = Analysis(1280)
-    
+
     mainlist = []
-    
+
     for dir in dirs:
         for filename in os.listdir(dir):        
             t = re.split("_", filename) # Split file title
@@ -109,6 +109,7 @@ def ratevsLArdepthfit(dirs):
         
     closed = [mainlist[i] for i in range(len(mainlist)) if mainlist[i][2] == 'clo'] # Shutter closed data (background signals only)
     bkgdlist = []
+
     for d in depth:
         bkgd = np.mean([closed[i][3] for i in range(len(closed)) if float(closed[i][1]) == d]) # background trigger rate at depth d
         bkgdlist.append([d, bkgd])
