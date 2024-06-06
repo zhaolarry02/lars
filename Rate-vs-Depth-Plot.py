@@ -21,6 +21,7 @@ def ratevsSiPMdepth(dirs):
     ana = Analysis(1280)
     
     mainlist = []
+    
     for dir in dirs:
         for filename in os.listdir(dir):        
             t = re.split("_", filename) # Split file title
