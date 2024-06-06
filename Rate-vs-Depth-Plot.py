@@ -1,4 +1,4 @@
-# Two functions produce: 1. plot of SiPM Trigger Rate versus vertical distance from Liquid Argon surface to SiPM, 2. plot SiPM Trigger Rate versus Liquid Argon Depth
+# Two functions produce: 1. plot of SiPM Trigger Rate versus vertical distance from Liquid Argon surface to SiPM, 2. plot SiPM Trigger Rate versus Liquid Argon Depth and curve fit
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -88,7 +88,7 @@ def ratevsSiPMdepth(dirs):
     # plt.show()
 
 
-# Plot SiPM Trigger Rate versus Liquid Argon Depth
+# Plot SiPM Trigger Rate versus Liquid Argon Depth and curve fit
 def ratevsLArdepthfit(dirs):
     depth = [60, 55, 50, 45, 40, 35, 30, 26, 25, 21, 17, 14, 12] # depth in inches
     depthcm = [128.0970994, 114.9495949, 102.4368448, 89.3539062, 76.68776733, 64.50960174, 51.8504376, 42.32291091, 39.6549546, 27.42838632, 17.6438245, 9.824104101, 4.674364388] # depth in centimeters
