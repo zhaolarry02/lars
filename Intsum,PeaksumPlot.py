@@ -1,4 +1,4 @@
-# Plot Intsum, Peaksum for single wavelength / for background
+# Plot Intsum, Peaksum for single wavelength / for background, at each depth
 
 import numpy as np
 import pandas as pd
