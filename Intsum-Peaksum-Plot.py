@@ -53,4 +53,4 @@ def peaksumplot(path, wvl):  # path to 1107-1111Data, wvl is string e.g. 'clo' o
 		# plt.show()
 
 
-intsumplot("C:\\...\\1107-1111Data")
+intsumplot("C:\\...\\1107-1111Data", wvl) # wvl examples: 'clo', '128'
