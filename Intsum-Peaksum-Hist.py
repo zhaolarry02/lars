@@ -1,4 +1,4 @@
-# Plot Intsum, Peaksum for single wavelength / for background, at each depth
+# Plot Intsum, Peaksum histograms for single wavelength / for background, at each depth
 
 import numpy as np
 import pandas as pd
@@ -7,7 +7,7 @@ import os
 import re
 from Analysis import Analysis
 
-def intsumplot(path, wvl):  # path to 1107-1111Data, wvl is string e.g. 'clo' or '128'
+def intsumhist(path, wvl):  # path to 1107-1111Data, wvl is string e.g. 'clo' or '128'
 	depth = [60, 55, 50, 45, 40, 35, 30, 26, 25, 21, 17, 14, 12] # in inches
 	ana = Analysis(1280)
 
@@ -30,7 +30,7 @@ def intsumplot(path, wvl):  # path to 1107-1111Data, wvl is string e.g. 'clo' or
 		# plt.show()
 
 
-def peaksumplot(path, wvl):  # path to 1107-1111Data, wvl is string e.g. 'clo' or '128'
+def peaksumhist(path, wvl):  # path to 1107-1111Data, wvl is string e.g. 'clo' or '128'
 	depth = [60, 55, 50, 45, 40, 35, 30, 26, 25, 21, 17, 14, 12] # in inches
 	ana = Analysis(1280)
 
@@ -53,4 +53,4 @@ def peaksumplot(path, wvl):  # path to 1107-1111Data, wvl is string e.g. 'clo' o
 		# plt.show()
 
 
-intsumplot("C:\\...\\1107-1111Data", wvl) # wvl examples: 'clo', '128'
+intsumhist("C:\\...\\1107-1111Data", wvl) # wvl examples: 'clo', '128'
