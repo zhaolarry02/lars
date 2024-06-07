@@ -1,4 +1,4 @@
-# Two functions produce: 1. plot of SiPM Trigger Rate versus vertical distance from Liquid Argon surface to SiPM, 2. plot SiPM Trigger Rate versus Liquid Argon Depth and curve fit
+# 3 functions produce: 1. plot of SiPM Trigger Rate versus vertical distance from Liquid Argon surface to SiPM, 2. plot SiPM Trigger Rate versus Liquid Argon Depth and curve fit, 3. plot nackground subtracted trigger rate versus time.
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -136,5 +136,58 @@ def ratevsLArdepthfit(dirs):
         # print(wvlsignal)
 
 
+# Plot Shutter Open Time versus Shutter Open Rates subtracted by closest timestamp Background Rate
+def bkgdsubvtime(dir, wvl): # main function for scattering length analysis
+    depths = [20, 17, 14, 11] # LAr depth in in
+    channelID = [1, 2, 4, 5, 6]
+    ana = Analysis(wvl) # import Analysis function (Github)
+
+    closed = [] # contains sublist [time (s), depth (in), rate (Hz)] for each shutter closed file
+    opened = [] # contains sublist [time (s), depth (in), rate (Hz)] for each shutter open file
+    opened_time = [] #  List of time in seconds since time 00:00:00 of data collection date for each data file
+
+    for filename in os.listdir(dir): # Finds time in seconds        
+        t = re.split("_", filename) # Split file title
+
+        #Closed
+        if t[1][:6] == 'closed':
+            time = (int(t[3][0:2]))*3600 + int(t[3][3:5])*60 + int(t[3][6:8])
+            df = ana.import_file(dir+filename, [])
+            trigrate = ana.trig_rate(df, channelID)
+            closed.append([time, t[0][:2], trigrate[0]]) # time (s), depth (in), trigger rate (Hz) for Channel 1
+
+        #Opened
+        if t[1][:4] == str(wvl):
+            time = (int(t[3][0:2]))*3600 + int(t[3][3:5])*60 + int(t[3][6:8])
+            opened_time.append(time)
+            df = ana.import_file(dir+filename, [])
+            trigrate = ana.trig_rate(df, channelID)
+            opened.append([time, t[0][:2], trigrate[0]]) # time (s), depth (in), trigger rate (Hz) for Channel 1
+    
+    sorted(closed, key=lambda x: x[0]) # Sort shutter closed files by timestamp
+    sorted(opened, key=lambda x: x[0]) # Sort shutter opened files by timestamp
+    
+
+    signal = []
+
+    for i in range(len(opened)):
+        timedifflist = []
+        for j in range(len(closed)):
+            if opened[i][1] == closed[j][1]: #if opened depth = closed depth
+                timediff = abs(opened[i][0] - closed[j][0]) # absolute difference between opened timestamp and closed timestamp 
+                timedifflist.append(timediff)
+        index = np.argmin(timedifflist)
+        signal.append(opened[i][2] - closed[index][2])
+
+
+    plt.title(str(wvl)+' Rate minus Background v Time')
+    plt.scatter(opened_time, signal)
+    plt.xlabel('Time (s) since 00:00:00 of data collection date')
+    plt.ylabel('Ch 1 Background Subtracted Trigger Rate')
+    plt.grid()
+    plt.show()
+
+
 ratevsSiPMdepth([<list of data file directories>])
 ratevsLArdepthfit([<list of data file directories>])
+bkgdsubvtime("C:\\...\\20231025_lightsource_cali\\", 1280)
