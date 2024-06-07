@@ -1,4 +1,4 @@
-# 3 functions produce: 1. plot of SiPM Trigger Rate versus vertical distance from Liquid Argon surface to SiPM, 2. plot SiPM Trigger Rate versus Liquid Argon Depth and curve fit, 3. plot nackground subtracted trigger rate versus time.
+# 3 functions produce: 1. plot of background subtracted SiPM Trigger Rate versus vertical distance from Liquid Argon surface to SiPM, 2. plot background subtracted SiPM Trigger Rate versus Liquid Argon Depth and curve fit, 3. plot background subtracted trigger rate versus time.
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -44,7 +44,7 @@ def ratevsSiPMdepth(dirs):
                 bkgd2.append([closed[i][4]])
                 bkgd4.append([closed[i][5]])
                 bkgd5.append([closed[i][6]])
-        bkgdlist.append([np.mean(bkgd1), np.mean(bkgd2), np.mean(bkgd4), np.mean(bkgd5)])
+        bkgdlist.append([np.mean(bkgd1), np.mean(bkgd2), np.mean(bkgd4), np.mean(bkgd5)]) # mean background trigger rate per channel at depth d
 
     opened = [mainlist[i] for i in range(len(mainlist)) if mainlist[i][2] == str(wvl)]
 
@@ -67,7 +67,7 @@ def ratevsSiPMdepth(dirs):
                 signal5.append([i[6] - bkgdlist[d][3]])
         
         sipmz2 = [depthcm[d], depthcm[d]-46.25968709+25.75968709, depthcm[d]-65.25968709+25.75968709, depthcm[d]-143.5596871+25.75968709]
-        wvlsignal.append([np.mean(signal1), np.mean(signal2), np.mean(signal4), np.mean(signal5)])
+        wvlsignal.append([np.mean(signal1), np.mean(signal2), np.mean(signal4), np.mean(signal5)]) # mean background subtracted trigger rates
         plt.scatter(sipmz2, wvlsignal, c=color) # , label=str(depth[d])
         # plt.title(str(depthcm[d])+" LAr Depth (cm)")
         # plt.ylim(ymin=0)
@@ -111,14 +111,14 @@ def ratevsLArdepthfit(dirs):
     bkgdlist = []
 
     for d in depth:
-        bkgd = np.mean([closed[i][3] for i in range(len(closed)) if float(closed[i][1]) == d]) # background trigger rate at depth d
+        bkgd = np.mean([closed[i][3] for i in range(len(closed)) if float(closed[i][1]) == d]) # mean background trigger rate at depth d
         bkgdlist.append([d, bkgd])
 
     for wvl in wavelength:
         opened = [mainlist[i] for i in range(len(mainlist)) if mainlist[i][2] == str(wvl)]
         wvlsignal = [] 
         for d in range(len(depth)):
-            signal = np.mean([i[3] - bkgdlist[d][1] for i in opened if float(i[1]) == depth[d]])
+            signal = np.mean([i[3] - bkgdlist[d][1] for i in opened if float(i[1]) == depth[d]]) # mean background subtracted trigger rate
             wvlsignal.append(signal)
         
 
