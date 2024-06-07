@@ -137,7 +137,7 @@ def ratevsLArdepthfit(dirs):
 
 
 # Plot Shutter Open Time versus Shutter Open Rates subtracted by closest timestamp Background Rate
-def bkgdsubvtime(dir, wvl): # main function for scattering length analysis
+def bkgdsubvtime(dir, wvl):
     depths = [20, 17, 14, 11] # LAr depth in in
     channelID = [1, 2, 4, 5, 6]
     ana = Analysis(wvl) # import Analysis function (Github)
