@@ -17,7 +17,7 @@ def ratevsSiPMdepth(dirs):
     depthcm = [128.0970994, 114.9495949, 102.4368448, 89.3539062, 76.68776733, 64.50960174, 51.8504376, 42.32291091, 39.6549546, 27.42838632, 17.6438245, 9.824104101, 4.674364388] # depth in centimeters
     channelID = [1, 2, 4, 5]
     # wavelength = [124, 125, 126, 127, 128, 129, 130, 131, 132, 142, 152, 173, 174, 175, 176, 177, 178, 179, 180] # wavelength in nanometers
-    wv = 128 # Argon scintillation peak wavelength in nanometers
+    wvl = 128 # Argon scintillation peak wavelength in nanometers
     ana = Analysis(1280)
 
     mainlist = []
@@ -46,7 +46,7 @@ def ratevsSiPMdepth(dirs):
                 bkgd5.append([closed[i][6]])
         bkgdlist.append([np.mean(bkgd1), np.mean(bkgd2), np.mean(bkgd4), np.mean(bkgd5)])
 
-    opened = [mainlist[i] for i in range(len(mainlist)) if mainlist[i][2] == str(wv)]
+    opened = [mainlist[i] for i in range(len(mainlist)) if mainlist[i][2] == str(wvl)]
 
     sipmz = [25.75968709, 46.25968709, 65.25968709, 143.5596871] # SiPM Depth in centimeters
     color = ['c', 'r', 'b', 'g']
@@ -114,15 +114,15 @@ def ratevsLArdepthfit(dirs):
         bkgd = np.mean([closed[i][3] for i in range(len(closed)) if float(closed[i][1]) == d]) # background trigger rate at depth d
         bkgdlist.append([d, bkgd])
 
-    for wv in wavelength:
-        opened = [mainlist[i] for i in range(len(mainlist)) if mainlist[i][2] == str(wv)]
+    for wvl in wavelength:
+        opened = [mainlist[i] for i in range(len(mainlist)) if mainlist[i][2] == str(wvl)]
         wvlsignal = [] 
         for d in range(len(depth)):
             signal = np.mean([i[3] - bkgdlist[d][1] for i in opened if float(i[1]) == depth[d]])
             wvlsignal.append(signal)
         
 
-        plt.title(str(wv)+str(channelID))
+        plt.title(str(wvl)+str(channelID))
         plt.scatter(depthcm, wvlsignal)
         par, cov = scipy.optimize.curve_fit(exp, depthcm[:8], wvlsignal[:8], p0=[1/125, 115, 25], maxfev=100000)
         plt.plot(depthcm[:8], exp(depthcm[:8], *par), label='l = '+str(round(1/par[0], 2)))
@@ -132,7 +132,7 @@ def ratevsLArdepthfit(dirs):
         plt.grid()
         plt.legend()
         plt.show()
-        # plt.savefig("<save directory>"+"Length_Fit"+str(wv)+".png")
+        # plt.savefig("<save directory>"+"Length_Fit"+str(wvl)+".png")
         # print(wvlsignal)
 
 
