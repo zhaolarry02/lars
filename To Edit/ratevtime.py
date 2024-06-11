@@ -1,3 +1,5 @@
+# This function analyzed data from tests of the lamp intensity versus time
+
 import os
 import numpy as np
 import re
