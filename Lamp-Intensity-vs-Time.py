@@ -19,13 +19,13 @@ def lin(x, m, b):
 def lampintensityplot(dir, wvl):
     ana = Analysis(wvl)
 
-    #closed
+    #Closed
     timeclosed = []
     rateclosed1 = []
     rateclosed2 = []
     rateclosed6 = []
 
-    #open
+    #Opened
     timeopened = []
     rateopened1 = []
     rateopened2 = []
@@ -51,7 +51,7 @@ def lampintensityplot(dir, wvl):
                 # date_object = datetime.strptime(t[2][2:10]+' '+t[3][:8], "%y-%m-%d %H-%M-%S")
                 # timeclosed.append(date_object)
 
-        #128 nm
+        #Opened
         if t[1][:4] == str(wvl):
             time = (int(t[3][0:2]))*3600 + int(t[3][3:5])*60 + int(t[3][6:8])
             timeopened.append(time)
