@@ -8,22 +8,24 @@ import scipy.optimize
 def exp(x, m, a, b):
     return (-a * np.exp(np.array([-i for i in x]) * m) + b)
 
-def function(dir, wlen):
+def function(dir, wvl):
+    ana = Analysis(wvl)
+    
     #closed
     depths = ['49', '54', '59', '62']
 
-    timelistc = []
-    ratelistc1 = []
-    # ratelistc2 = []
-    # ratelistc6 = []
-    depthc = []
+    timeclosed = []
+    rateclosed1 = []
+    # rateclosed2 = []
+    # rateclosed6 = []
+    depthclosed = []
 
-    #128 nm
-    timelisto = []
-    ratelisto1 = []
-    # ratelisto2 = []
-    # ratelisto6 = []
-    deptho = []
+    #Opened
+    timeopened = []
+    rateopened1 = []
+    # rateopened2 = []
+    # rateopened6 = []
+    depthopened = []
 
     channelID = [1, 2, 4, 5, 6]
 
@@ -34,67 +36,63 @@ def function(dir, wlen):
         #Closed
         if t[1][:6] == 'closed':
             time = (int(t[3][0:2]))*3600 + int(t[3][3:5])*60 + int(t[3][6:8])
-            timelistc.append(time)
-            depthc.append(t[0][:2])
-            # Finds Trigger Rate
-            ana = Analysis(wlen)
+            timeclosed.append(time)
+            depthclosed.append(t[0][:2])
             df = ana.import_file(dir+filename, [])
             trigrate = ana.trig_rate(df, channelID)
-            ratelistc1.append(trigrate[0])
-            # ratelistc2.append(trigrate[1])
-            # ratelistc6.append(trigrate[4])
+            rateclosed1.append(trigrate[0])
+            # rateclosed2.append(trigrate[1])
+            # rateclosed6.append(trigrate[4])
 
-        #128 nm
-        if t[1][:6] == '1280A2':
+        #Opened
+        if t[1][:4] == str(wvl):
             time = (int(t[3][0:2]))*3600 + int(t[3][3:5])*60 + int(t[3][6:8])
-            timelisto.append(time)
-            deptho.append(t[0][:2])
-            # Finds Trigger Rate
-            ana = Analysis(wlen)
+            timeopened.append(time)
+            depthopened.append(t[0][:2])
             df = ana.import_file(dir+filename, [])
             trigrate = ana.trig_rate(df, channelID)
-            ratelisto1.append(trigrate[0])
-            # ratelisto2.append(trigrate[1])
-            # ratelisto6.append(trigrate[4])
+            rateopened1.append(trigrate[0])
+            # rateopened2.append(trigrate[1])
+            # rateopened6.append(trigrate[4])
 
-    # timelistc, ratelistc1, ratelistc2, ratelistc6, depthc = zip(*sorted(zip(timelistc, ratelistc1, ratelistc2, ratelistc6, depthc)))
-    # timelisto, ratelisto1, ratelisto2, ratelisto6, deptho = zip(*sorted(zip(timelisto, ratelisto1, ratelisto2, ratelisto6, deptho)))
+    timeclosed, rateclosed1, rateclosed2, rateclosed6, depthclosed = zip(*sorted(zip(timeclosed, rateclosed1, rateclosed2, rateclosed6, depthclosed)))
+    timeopened, rateopened1, rateopened2, rateopened6, depthopened = zip(*sorted(zip(timeopened, rateopened1, rateopened2, rateopened6, depthopened)))
 
     #Plot per level
-    # print(deptho)
-    # print(timelisto)
-    # print(ratelisto1)
-    # for i in depths:
-    #     x = []
-    #     y = []
-    #     for j in range(len(deptho)):
-    #         if deptho[j] == i:
-    #             x.append(timelisto[j])
-    #             y.append(ratelisto1[j])
-    #             print(i, deptho[j])
-    #     plt.scatter(np.array(x)-min(x), y)
-    #     plt.title('Depth = '+str(i))
-    #     plt.savefig('C:\\Users\\lzvio\\Intensity vs Time Plots\\Depth'+str(i)+'.png')
+    print(depthopened)
+    print(timeopened)
+    print(rateopened1)
+    for i in depths:
+        x = []
+        y = []
+        for j in range(len(depthopened)):
+            if depthopened[j] == i:
+                x.append(timeopened[j])
+                y.append(rateopened1[j])
+                print(i, depthopened[j])
+        plt.scatter(np.array(x)-min(x), y)
+        plt.title('Depth = '+str(i))
+        plt.savefig('C:\\Users\\lzvio\\Intensity vs Time Plots\\Depth'+str(i)+'.png')
 
     #Plot per level, subtract nearest background
-    # for i in depths:
-    #     x = []
-    #     y = []
-    #     for j in range(len(deptho)):
-    #         if deptho[j] == i:
-    #             stuff = abs(np.array(timelistc) - timelisto[j])
-    #             index = stuff.argmin()
-    #             # print(timelistc[index], timelisto[j])
-    #             x.append(timelisto[j])
-    #             y.append(ratelisto1[j] - ratelistc1[index])
-    #     # print(i, x, y)
-    #     plt.scatter(x, y)
-    #     plt.ylim(0, 100)
-    #     plt.title('Depth = '+str(i))
-    #     plt.show()
-    #     plt.savefig('C:\\Users\\lzvio\\Intensity vs Time Plots\\Depth'+str(i)+'-Background.png')
-    #     x.clear()
-    #     y.clear()
+    for i in depths:
+        x = []
+        y = []
+        for j in range(len(depthopened)):
+            if depthopened[j] == i:
+                stuff = abs(np.array(timeclosed) - timeopened[j])
+                index = stuff.argmin()
+                # print(timeclosed[index], timeopened[j])
+                x.append(timeopened[j])
+                y.append(rateopened1[j] - rateclosed1[index])
+        # print(i, x, y)
+        plt.scatter(x, y)
+        plt.ylim(0, 100)
+        plt.title('Depth = '+str(i))
+        plt.show()
+        plt.savefig('C:\\Users\\lzvio\\Intensity vs Time Plots\\Depth'+str(i)+'-Background.png')
+        x.clear()
+        y.clear()
 
     # Plot all 128 rate from single day, minus background
     x = []
@@ -104,16 +102,16 @@ def function(dir, wlen):
     # ytesto = []
     # ytestc = []
 
-    for j in range(len(timelisto)):
-        stuff = abs(np.array(timelistc) - timelisto[j])
+    for j in range(len(timeopened)):
+        stuff = abs(np.array(timeclosed) - timeopened[j])
         index = stuff.argmin()
-        x.append(timelisto[j])
-        y.append(ratelisto1[j] - ratelistc1[index])
+        x.append(timeopened[j])
+        y.append(rateopened1[j] - rateclosed1[index])
         # print(i, x, y)
 
-        # xc.append(timelistc[index])
-        # ytesto.append(ratelisto1[j])
-        # ytestc.append(ratelistc1[index])
+        # xc.append(timeclosed[index])
+        # ytesto.append(rateopened1[j])
+        # ytestc.append(rateclosed1[index])
 
     # x, xc, ytesto, ytestc = zip(*sorted(zip(x, xc, ytesto, ytestc)))
     # for i in range(len(ytesto)):
@@ -130,29 +128,29 @@ def function(dir, wlen):
     print(par)
 
 #     To plot begin/end from multiple days
-#     x = []
-#     y = []
-#     for j in range(len(timelisto)):
-#         stuff = abs(np.array(timelistc) - timelisto[j])
-#         index = stuff.argmin()
-#         x.append(timelisto[j])
-#         y.append(ratelisto1[j] - ratelistc1[index])
-#         # print(i, x, y)
-#     x, y = zip(*sorted(zip(x, y)))
-#     times.append(x[0])
-#     times.append(list(x).pop())
-#     rates.append(y[0])
-#     rates.append(list(y).pop())
-# times = []
-# rates = []
+    x = []
+    y = []
+    for j in range(len(timeopened)):
+        stuff = abs(np.array(timeclosed) - timeopened[j])
+        index = stuff.argmin()
+        x.append(timeopened[j])
+        y.append(rateopened1[j] - rateclosed1[index])
+        # print(i, x, y)
+    x, y = zip(*sorted(zip(x, y)))
+    times.append(x[0])
+    times.append(list(x).pop())
+    rates.append(y[0])
+    rates.append(list(y).pop())
+times = []
+rates = []
 #Call function here with each day's folder path
-# times = np.array(times)
-# times[2:4] = times[2:4]+24*3600
-# times[4:6] = times[2:4]+24*3600*2
-# times[6:8] = times[2:4]+24*3600*3
-# plt.scatter(times, rates)
-# plt.title('First and Last 128 nm Intensity Per Day')
-# plt.show()
+times = np.array(times)
+times[2:4] = times[2:4]+24*3600
+times[4:6] = times[2:4]+24*3600*2
+times[6:8] = times[2:4]+24*3600*3
+plt.scatter(times, rates)
+plt.title('First and Last 128 nm Intensity Per Day')
+plt.show()
 
 # function("C:\\Users\\lzvio\\20231005_measurement\\", 1280)
 # function("C:\\Users\\lzvio\\20231006_measurement\\", 1280)
