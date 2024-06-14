@@ -68,7 +68,7 @@ def function(dir, wvl):
                 print(i, depthopened[j])
         plt.scatter(np.array(x)-min(x), y)
         plt.title('Depth = '+str(i))
-        plt.savefig('C:\\Users\\lzvio\\Intensity vs Time Plots\\Depth'+str(i)+'.png')
+        plt.savefig('C:\\...\\Depth'+str(i)+'.png')
 
     #Plot Ch 1 Shutter Open Rate minus Nearest Background, per Level
     for i in depths:
@@ -86,11 +86,11 @@ def function(dir, wvl):
         plt.ylim(0, 100)
         plt.title('Depth = '+str(i))
         plt.show()
-        plt.savefig('C:\\Users\\lzvio\\Intensity vs Time Plots\\Depth'+str(i)+'-Background.png')
+        plt.savefig('C:\\...\\Depth'+str(i)+'-Background.png')
         x.clear()
         y.clear()
 
-    # Plot all 128 rate from single day, minus background
+    # Plot all Ch 1 Shutter Opened Rate minus Nearest Background, from one day
     x = []
     y = []
 
@@ -122,37 +122,32 @@ def function(dir, wvl):
     plt.show()
     print(par)
 
-    # To plot begin/end from multiple days
-    x = []
-    y = []
-    for j in range(len(timeopened)):
-        timediff = abs(np.array(timeclosed) - timeopened[j])
-        index = timediff.argmin()
-        x.append(timeopened[j])
-        y.append(rateopened1[j] - rateclosed1[index])
-        # print(i, x, y)
-    x, y = zip(*sorted(zip(x, y)))
-    times.append(x[0])
-    times.append(list(x).pop())
-    rates.append(y[0])
-    rates.append(list(y).pop())
-times = []
-rates = []
-#Call function here with each day's folder path
-times = np.array(times)
-times[2:4] = times[2:4]+24*3600
-times[4:6] = times[2:4]+24*3600*2
-times[6:8] = times[2:4]+24*3600*3
-plt.scatter(times, rates)
-plt.title('First and Last 128 nm Intensity Per Day')
-plt.show()
+#     # To plot begin/end from multiple days
+#     x = []
+#     y = []
+#     for j in range(len(timeopened)):
+#         timediff = abs(np.array(timeclosed) - timeopened[j])
+#         index = timediff.argmin()
+#         x.append(timeopened[j])
+#         y.append(rateopened1[j] - rateclosed1[index])
+#         # print(i, x, y)
+#     x, y = zip(*sorted(zip(x, y)))
+#     times.append(x[0])
+#     times.append(list(x).pop())
+#     rates.append(y[0])
+#     rates.append(list(y).pop())
+# times = []
+# rates = []
+# # Call function here with each day's folder path
+# times = np.array(times)
+# times[2:4] = times[2:4]+24*3600
+# times[4:6] = times[2:4]+24*3600*2
+# times[6:8] = times[2:4]+24*3600*3
+# plt.scatter(times, rates)
+# plt.title('First and Last '+str(wvl)+' nm Intensity Per Day')
+# plt.show()
 
 # function("C:\\...\\20231005_measurement\\", 1280)
 # function("C:\\...\\20231006_measurement\\", 1280)
 # function("C:\\...\\20231009_measurement\\", 1280)
 # function("C:\\...\\20231010_measurement\\", 1280)
-
-
-# Day 1 Fit Parameters: [1.47938280e-04 1.48632302e+02 2.66501532e+02]
-# Day 2 Fit Parameters: [3.93767742e-04 1.09954282e+02 2.32693275e+02]
-# Day 3 Fit Parameters: [-1.76998555e-03 -5.67332915e-02  3.48789744e+01]
