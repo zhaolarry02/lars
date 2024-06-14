@@ -16,21 +16,20 @@ def function(dir, wvl):
 
     timeclosed = []
     rateclosed1 = []
-    # rateclosed2 = []
-    # rateclosed6 = []
+    rateclosed2 = []
+    rateclosed6 = []
     depthclosed = []
 
     #Opened
     timeopened = []
     rateopened1 = []
-    # rateopened2 = []
-    # rateopened6 = []
+    rateopened2 = []
+    rateopened6 = []
     depthopened = []
 
     channelID = [1, 2, 4, 5, 6]
 
     for filename in os.listdir(dir):
-        # Finds time in seconds from first timestamp
         t = re.split("_", filename)
 
         #Closed
@@ -41,8 +40,8 @@ def function(dir, wvl):
             df = ana.import_file(dir+filename, [])
             trigrate = ana.trig_rate(df, channelID)
             rateclosed1.append(trigrate[0])
-            # rateclosed2.append(trigrate[1])
-            # rateclosed6.append(trigrate[4])
+            rateclosed2.append(trigrate[1])
+            rateclosed6.append(trigrate[4])
 
         #Opened
         if t[1][:4] == str(wvl):
@@ -52,16 +51,13 @@ def function(dir, wvl):
             df = ana.import_file(dir+filename, [])
             trigrate = ana.trig_rate(df, channelID)
             rateopened1.append(trigrate[0])
-            # rateopened2.append(trigrate[1])
-            # rateopened6.append(trigrate[4])
+            rateopened2.append(trigrate[1])
+            rateopened6.append(trigrate[4])
 
     timeclosed, rateclosed1, rateclosed2, rateclosed6, depthclosed = zip(*sorted(zip(timeclosed, rateclosed1, rateclosed2, rateclosed6, depthclosed)))
     timeopened, rateopened1, rateopened2, rateopened6, depthopened = zip(*sorted(zip(timeopened, rateopened1, rateopened2, rateopened6, depthopened)))
 
-    #Plot per level
-    print(depthopened)
-    print(timeopened)
-    print(rateopened1)
+    #Plot Ch 1 Shutter Open Rate per Level
     for i in depths:
         x = []
         y = []
@@ -74,7 +70,7 @@ def function(dir, wvl):
         plt.title('Depth = '+str(i))
         plt.savefig('C:\\Users\\lzvio\\Intensity vs Time Plots\\Depth'+str(i)+'.png')
 
-    #Plot per level, subtract nearest background
+    #Plot Ch 1 Shutter Open Rate minus Nearest Background, per Level
     for i in depths:
         x = []
         y = []
@@ -98,24 +94,23 @@ def function(dir, wvl):
     x = []
     y = []
 
-    # xc = []
-    # ytesto = []
-    # ytestc = []
+    xc = []
+    ytesto = []
+    ytestc = []
 
     for j in range(len(timeopened)):
         stuff = abs(np.array(timeclosed) - timeopened[j])
         index = stuff.argmin()
         x.append(timeopened[j])
         y.append(rateopened1[j] - rateclosed1[index])
-        # print(i, x, y)
 
-        # xc.append(timeclosed[index])
-        # ytesto.append(rateopened1[j])
-        # ytestc.append(rateclosed1[index])
+        xc.append(timeclosed[index])
+        ytesto.append(rateopened1[j])
+        ytestc.append(rateclosed1[index])
 
-    # x, xc, ytesto, ytestc = zip(*sorted(zip(x, xc, ytesto, ytestc)))
-    # for i in range(len(ytesto)):
-    #     print(x[i], ytesto[i], xc[i], ytestc[i])
+    x, xc, ytesto, ytestc = zip(*sorted(zip(x, xc, ytesto, ytestc)))
+    for i in range(len(ytesto)):
+        print(x[i], ytesto[i], xc[i], ytestc[i])
 
     x = np.array(x)-min(x)
 
@@ -154,7 +149,7 @@ plt.show()
 
 # function("C:\\Users\\lzvio\\20231005_measurement\\", 1280)
 # function("C:\\Users\\lzvio\\20231006_measurement\\", 1280)
-function("C:\\Users\\lzvio\\20231009_measurement\\", 1280)
+# function("C:\\Users\\lzvio\\20231009_measurement\\", 1280)
 # function("C:\\Users\\lzvio\\20231010_measurement\\", 1280)
 
 
