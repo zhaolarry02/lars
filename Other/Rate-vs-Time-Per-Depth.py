@@ -76,8 +76,8 @@ def function(dir, wvl):
         y = []
         for j in range(len(depthopened)):
             if depthopened[j] == i:
-                stuff = abs(np.array(timeclosed) - timeopened[j])
-                index = stuff.argmin()
+                timediff = abs(np.array(timeclosed) - timeopened[j])
+                index = timediff.argmin()
                 # print(timeclosed[index], timeopened[j])
                 x.append(timeopened[j])
                 y.append(rateopened1[j] - rateclosed1[index])
@@ -99,8 +99,8 @@ def function(dir, wvl):
     ytestc = []
 
     for j in range(len(timeopened)):
-        stuff = abs(np.array(timeclosed) - timeopened[j])
-        index = stuff.argmin()
+        timediff = abs(np.array(timeclosed) - timeopened[j])
+        index = timediff.argmin()
         x.append(timeopened[j])
         y.append(rateopened1[j] - rateclosed1[index])
 
@@ -122,12 +122,12 @@ def function(dir, wvl):
     plt.show()
     print(par)
 
-#     To plot begin/end from multiple days
+    # To plot begin/end from multiple days
     x = []
     y = []
     for j in range(len(timeopened)):
-        stuff = abs(np.array(timeclosed) - timeopened[j])
-        index = stuff.argmin()
+        timediff = abs(np.array(timeclosed) - timeopened[j])
+        index = timediff.argmin()
         x.append(timeopened[j])
         y.append(rateopened1[j] - rateclosed1[index])
         # print(i, x, y)
@@ -147,10 +147,10 @@ plt.scatter(times, rates)
 plt.title('First and Last 128 nm Intensity Per Day')
 plt.show()
 
-# function("C:\\Users\\lzvio\\20231005_measurement\\", 1280)
-# function("C:\\Users\\lzvio\\20231006_measurement\\", 1280)
-# function("C:\\Users\\lzvio\\20231009_measurement\\", 1280)
-# function("C:\\Users\\lzvio\\20231010_measurement\\", 1280)
+# function("C:\\...\\20231005_measurement\\", 1280)
+# function("C:\\...\\20231006_measurement\\", 1280)
+# function("C:\\...\\20231009_measurement\\", 1280)
+# function("C:\\...\\20231010_measurement\\", 1280)
 
 
 # Day 1 Fit Parameters: [1.47938280e-04 1.48632302e+02 2.66501532e+02]
