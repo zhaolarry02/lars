@@ -46,13 +46,13 @@ def closed3PErate(path): # path to 7.27 data directory
 
 
 # 180 nm 3 PE Rate
-def open180nm3PErate(path): # path to 7.27 data directory
+def opened3PErate(path, wvl): # path to 7.27 data directory, wavelength in nm
     lowlim = 16250
     uplim = 16450
-    print('180 nm 3 PE Rate')
+    print(str(wvl)+' nm 3 PE Rate')
     for filename in os.listdir(path):
         t = re.split("_", filename) # Split file title
-        if t[1][:3] == '180':
+        if t[1][:3] == str(wvl):
             rate = frequency3PE(path, filename, lowlim, uplim)
             print(filename, ' Frequency: ', round(rate, 5), '(Hz)')
 
@@ -61,7 +61,7 @@ def open180nm3PErate(path): # path to 7.27 data directory
 def LArDepth3PErate(path, depth): # path is to 7.27 data directory, depth is "<num>tin"
     lowlim = 16210
     uplim = 16450
-    print('60in 3 PE Rate')
+    print(str(depth)+' 3 PE Rate')
     for filename in os.listdir(path):
         t = re.split("_", filename) # Split file title
         if t[0][:5] == depth:
