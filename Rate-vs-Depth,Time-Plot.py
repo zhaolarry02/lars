@@ -136,7 +136,7 @@ def ratevsLArdepthfit(dirs):
         # print(wvlsignal)
 
 
-# Plot Shutter Open Time versus Shutter Open Rates subtracted by closest timestamp Background Rate
+# Plot Shutter Open Rate versus Shutter Open Time subtracted by closest timestamp Background Rate
 def bkgdsubvtime(dir, wvl):
     depths = [20, 17, 14, 11] # LAr depth in in
     channelID = [1, 2, 4, 5, 6]
