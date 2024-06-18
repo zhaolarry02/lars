@@ -10,7 +10,7 @@ def triggerperchannel(file):
 	df = pd.read_csv(file)
 	df = ana.import_file(dir+filename, [])
 	counter = Counter(df['ChannelID'])
-  trigrate = ana.trig_rate(df, channelID)
+  	trigrate = ana.trig_rate(df, channelID)
 	plt.figure()
 	# plt.scatter(counter.keys(), counter.values())
 	plt.scatter(counter.keys(), trigrate)
