@@ -6,10 +6,12 @@ from Analysis import Analysis
 # Code Plots Number of Triggers per Channel For a Single Wavelength
 
 def triggerperchannel(file):
+	channelID = [1, 2, 4, 5]
 	ana = Analysis(1280)
 	df = ana.import_file(file, [])
 	counter = Counter(df['ChannelID'])
 	trigrate = ana.trig_rate(df, channelID)
+	
 	plt.figure()
 	# plt.scatter(counter.keys(), counter.values())
 	plt.scatter(counter.keys(), trigrate)
