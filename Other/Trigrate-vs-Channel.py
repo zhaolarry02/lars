@@ -22,12 +22,12 @@ def trigrateperchannel(file):
 
 # Prints Shutter Closed Trigger Rates per Channel
 # dir is "C:\\Users\\lzvio\\OneDrive\\Desktop\\7.27"
-def printtrigrateperchannel(dir):
+def printtrigrateperchannel(dir, wvl): # wvl is string value e.g. 'clo', '128'
     channelID = [1, 2, 4, 5]
     ana = Analysis(1280)
     for filename in os.listdir(dir):
         t = re.split("_", filename) # Split file title
-        if t[1][:3] == 'clo':
+        if t[1][:3] == wvl:
             # time = (int(t[3][0:2]))*3600 + int(t[3][3:5])*60 + int(t[3][6:8]) # Calculate time in seconds since time 00:00:00 of data collection date
             df = ana.import_file(dir+filename, [])
             trigrate = ana.trig_rate(df, channelID) # Calculate Trigger Rate in Hertz via 'Analysis' script trigger rate function
