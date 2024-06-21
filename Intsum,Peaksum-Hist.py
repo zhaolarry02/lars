@@ -23,7 +23,7 @@ def intsumhist(path, wvl, ch):  # path to 1107-1111Data, wvl is string e.g. 'clo
 		# intsum_minus_pedestal = df['IntegratedSum'][i] - (df['Prerise'][i]*(I1/I2))
 
 		plt.figure()
-		plt.title(str(level)+'in LAr Ch '+str(ch)+' Shutter Closed IntSum Histogram')
+		plt.title(wvl+str(level)+'in LAr Ch '+str(ch)+' Shutter Closed IntSum Histogram')
 		plt.hist(intsum, bins=range(235500, 238000, 50), alpha=0.5)
 		plt.xlabel('Integrated Sum')
 		plt.grid()
@@ -47,7 +47,7 @@ def peaksumhist(path, wvl, ch):  # path to 1107-1111Data, wvl is string e.g. 'cl
 		# peaksum_minus_pedestal = df['PeakSum'][i] - (df['Prerise'][i]*(M1/I2))
 
 		plt.figure()
-		plt.title(str(level)+'in LAr Ch '+str(ch)+' Shutter Closed PeakSum Histogram')
+		plt.title(wvl+str(level)+'in LAr Ch '+str(ch)+' Shutter Closed PeakSum Histogram')
 		plt.hist(peaksum, bins=range(15700, 16400, 10), alpha=0.5)
 		plt.xlabel('Peak Sum')
 		plt.grid()
