@@ -3,6 +3,32 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from Analysis import Analysis
+
+
+def printtrigrate(dir, channelID, depth, wvl): # depth is value e.g. 60; wvl is string value e.g. 'clo', '128'
+    trigratelist = []
+    for filename in os.listdir(dir):
+        t = re.split("_", filename) # Split file title
+        if t[1][:3] == wvl  &  t[0][:2] == depth:
+            df = ana.import_file(dir+filename, [])
+            trigrate = ana.trig_rate(df, channelID) # Calculate Trigger Rate in Hertz via 'Analysis' script trigger rate function
+            trigratelist.append(trigrate)
+        rateperch = [np.mean(trigratelist, 0), np.mean(trigratelist, 1), np.mean(trigratelist, 2), np.mean(trigratelist, 3)]
+        print(wvl, 'Ch 1 Rate:', rateperch[0], ' Ch 2 Rate:', rateperch[1], ' Ch 4 Rate:', rateperch[2], ' Ch 5 Rate:', rateperch[3])
+        return rateperch
+
+
+def ratediff(dir, depth, wvl): # here wvl is opened only, e.g. '128' or '180'
+    channelID = [1, 2, 4, 5]
+    closed = printtrigrate(dir, depth, 'clo')
+    opened = printtrigrate(dir, depth, wvl)
+    rateminusbkgd = []
+    for i in range(len(channelID)):
+        rateminusbkgd.append(opened[i] - closed[i])
+    print(rateminusbkgd)
+
+
 
 file_closed = "C:\\Users\\lzvio\\OneDrive\\Desktop\\20230719_measure\\60tin_closed-0_2023-07-19_15-12-21.csv"
 file_closed1 = "C:\\Users\\lzvio\\OneDrive\\Desktop\\20230719_measure\\60tin_closed-0_2023-07-19_16-07-41.csv"
@@ -65,7 +91,7 @@ ax.set_ylabel('Rate [Hz]')
 plt.savefig('C:\\Users\\lzvio\\OneDrive\\Desktop\\20230719_measure\\Plots\\Photon_Detection_Frequency_'+Wavelength+'.png', dpi=150)
 plt.show()
 
-'''
+
 plt.bar(ch, freq_diff)
 plt.title(Wavelength)
 plt.xlabel('Channel')
@@ -92,4 +118,3 @@ for i in ch:
     num = len(dfc[dfc['ChannelID']==i])
     diff = np.max(dfc["timestamp_S"][dfc['ChannelID']==i]) - np.min(dfc["timestamp_S"][dfc['ChannelID']==i])
     closed_freq.append(num/diff)
-'''
