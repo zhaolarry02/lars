@@ -29,7 +29,7 @@ def intsumhist(path, wvl, ch):  # path to 1107-1111Data, wvl is string e.g. 'clo
 		plt.xlabel('Integrated Sum')
 		plt.grid()
 		plt.savefig('C:\\...\\Intsum_'+wvl+'_'+str(level)+'in_Closed_Ch'+str(ch)+'.png')
-		# plt.show()
+		plt.show()
 
 
 def peaksumhist(path, wvl, ch):  # path to 1107-1111Data, wvl is string e.g. 'clo' or '128'
@@ -54,7 +54,9 @@ def peaksumhist(path, wvl, ch):  # path to 1107-1111Data, wvl is string e.g. 'cl
 		plt.xlabel('Peak Sum')
 		plt.grid()
 		plt.savefig('C:\\...\\Peaksum_'+wvl+'_'+str(level)+'in_Closed_Ch'+str(ch)+'.png')
-		# plt.show()
+		plt.show()
 
 
 intsumhist("C:\\...\\1107-1111Data", wvl, 1) # wvl examples: 'clo', '128'
+
+# To plot all depths together, comment in function all plt.<...> line except plt.hist line, and call plt.legend(), plt.show() here
