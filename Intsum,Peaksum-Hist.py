@@ -21,6 +21,7 @@ def intsumhist(path, wvl, ch):  # path to 1107-1111Data, wvl is string e.g. 'clo
 		intsum  = df.loc[df['ChannelID'] == ch]['IntegratedSum'].values
 		prerise = df.loc[df['ChannelID'] == ch]['Prerise'].values
 		# intsum_minus_pedestal = df['IntegratedSum'][i] - (df['Prerise'][i]*(I1/I2))
+		# intsum_cut = [i for i in intsum if i >= <2-3 PE Boundary Value>]
 
 		plt.figure()
 		plt.title(wvl+' '+str(level)+'in LAr Ch '+str(ch)+' Shutter Closed IntSum Histogram')
@@ -45,6 +46,7 @@ def peaksumhist(path, wvl, ch):  # path to 1107-1111Data, wvl is string e.g. 'cl
 		peaksum = df.loc[df['ChannelID'] == ch]['PeakSum'].values
 		prerise = df.loc[df['ChannelID'] == ch]['Prerise'].values
 		# peaksum_minus_pedestal = df['PeakSum'][i] - (df['Prerise'][i]*(M1/I2))
+		# peaksum_cut = [i for i in peaksum if i >= <2-3 PE Boundary Value>]
 
 		plt.figure()
 		plt.title(wvl+'_'+str(level)+'in LAr Ch '+str(ch)+' Shutter Closed PeakSum Histogram')
