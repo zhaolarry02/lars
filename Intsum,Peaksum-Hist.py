@@ -25,7 +25,7 @@ def intsumhist(path, wvl, ch):  # path to 1107-1111Data, wvl is string e.g. 'clo
 
 		plt.figure()
 		plt.title(wvl+' '+str(level)+'in LAr Ch '+str(ch)+' Shutter Closed IntSum Histogram')
-		plt.hist(intsum, bins=range(235500, 238000, 50), alpha=0.5)
+		plt.hist(intsum, bins=range(235500, 238000, 50), alpha=0.5) # add density=True to normalize histogram
 		plt.xlabel('Integrated Sum')
 		plt.grid()
 		plt.savefig('C:\\...\\Intsum_'+wvl+'_'+str(level)+'in_Closed_Ch'+str(ch)+'.png')
@@ -50,7 +50,7 @@ def peaksumhist(path, wvl, ch):  # path to 1107-1111Data, wvl is string e.g. 'cl
 
 		plt.figure()
 		plt.title(wvl+'_'+str(level)+'in LAr Ch '+str(ch)+' Shutter Closed PeakSum Histogram')
-		plt.hist(peaksum, bins=range(15700, 16400, 10), alpha=0.5)
+		plt.hist(peaksum, bins=range(15700, 16400, 10), alpha=0.5) # add density=True to normalize histogram
 		plt.xlabel('Peak Sum')
 		plt.grid()
 		plt.savefig('C:\\...\\Peaksum_'+wvl+'_'+str(level)+'in_Closed_Ch'+str(ch)+'.png')
